@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "AzureDynamicDNS": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
