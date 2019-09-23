@@ -19,7 +19,7 @@ namespace AzureDynamicDNS
         public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
-            dyndns = new DynamicDNS(_logger);
+            
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -29,6 +29,18 @@ namespace AzureDynamicDNS
             configuration.Bind(appsetting);
 
             _appsetting = appsetting;
+        }
+
+        public override Task StartAsync(CancellationToken cancellationToken)
+        {
+            dyndns = new DynamicDNS(_logger);
+            return base.StartAsync(cancellationToken);
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            dyndns.Dispose();
+            return base.StopAsync(cancellationToken);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

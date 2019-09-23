@@ -225,34 +225,10 @@ namespace AzureDynamicDNS
 
             return azure;
         }
-        public void updateDNSbkp()
+        
+        public void Dispose()
         {
-            _logger.LogInformation("Hello World!");
-            var cred = SdkContext.AzureCredentialsFactory.FromServicePrincipal("ecae79c9-b0b1-4ddf-bfbe-8518421bcfb8", "-&cO@}@ZRMRO&O%%D)HB)EufZ{b@d17;Bi/k|u+}]U?7a%|+)uJ", "victorhepoca.onmicrosoft.com", AzureEnvironment.AzureGlobalCloud);
-
-            var azure = Azure
-                .Configure()
-                .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
-                .Authenticate(cred)
-                .WithDefaultSubscription();
-
-            var resourceGroup = azure.ResourceGroups.GetByName("ExternalDNS");
-            //var rootDnsZone = azure.DnsZones.Define("hepoca.com");
-            var rootDnsZone = azure.DnsZones.GetByResourceGroup(resourceGroup.Name, "hepoca.com");
-
-            var aRecord = rootDnsZone.ARecordSets.GetByName("victorcasa");
-
-            _logger.LogInformation(aRecord.IPv4Addresses[0].ToString());
-
-            // Add
-            var resARecord = rootDnsZone.Update().UpdateARecordSet(aRecord.Name).WithIPv4Address("127.0.0.1");
-
-            // Remove
-            var resARecord2 = rootDnsZone.Update().UpdateARecordSet(aRecord.Name).WithoutIPv4Address("127.0.0.1");
-            //var resARecord = rootDnsZone.Update().//(aRecord.Name).WithIPv4Address("127.0.0.1");
-            var res = rootDnsZone.Update().Apply();
-
-            _logger.LogInformation("Test Log");
+            httpClient.Dispose();
         }
 
     }
